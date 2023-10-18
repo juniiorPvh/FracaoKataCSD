@@ -45,6 +45,65 @@ class FractionKataApplicationTests {
 	}
 
 	@Test
+	public void testAddFractionsTodosZeros() throws Exception {
+		FractionRequest request = new FractionRequest(0, 1, 0, 1);
+
+		mockMvc.perform(post("/fractions/add")
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(asJsonString(request)))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.numerator").value(0))
+				.andExpect(jsonPath("$.denominator").value(1));
+	}
+
+	@Test
+	public void testAddFractionsTodosUm() throws Exception {
+		FractionRequest request = new FractionRequest(1, 1, 1, 1);
+
+		mockMvc.perform(post("/fractions/add")
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(asJsonString(request)))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.numerator").value(2))
+				.andExpect(jsonPath("$.denominator").value(1));
+	}
+
+	@Test
+	public void testAddFractionsSomaNumerosNegativos() throws Exception {
+		FractionRequest request = new FractionRequest(-1, -1, -1, -1);
+
+		mockMvc.perform(post("/fractions/add")
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(asJsonString(request)))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.numerator").value(2))
+				.andExpect(jsonPath("$.denominator").value(1));
+	}
+
+	@Test
+	public void testAddFractionsSimplificado() throws Exception {
+		FractionRequest request = new FractionRequest(10, 12, 6, 12);
+
+		mockMvc.perform(post("/fractions/add")
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(asJsonString(request)))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.numerator").value(4))
+				.andExpect(jsonPath("$.denominator").value(3));
+	}
+
+//	@Test
+//	public void testAddFractionsDenominadorZero() throws Exception {
+//		FractionRequest request = new FractionRequest(10, 0, 6, 0);
+//
+//		mockMvc.perform(post("/fractions/add")
+//						.contentType(MediaType.APPLICATION_JSON)
+//						.content(asJsonString(request)))
+//				.andExpect(status().isOk())
+//				.andExpect(jsonPath("$.numerator").value("Indeterminado"));
+//	}
+
+	@Test
 	public void testSubtractFractions() throws Exception {
 		FractionRequest request = new FractionRequest(3, 4, 1, 4);
 
@@ -55,6 +114,102 @@ class FractionKataApplicationTests {
 				.andExpect(jsonPath("$.numerator").value(1))
 				.andExpect(jsonPath("$.denominator").value(2));
 	}
+
+	@Test
+	public void testSubtractFractionsComZero() throws Exception {
+		FractionRequest request = new FractionRequest(0, 1, 0, 1);
+
+		mockMvc.perform(post("/fractions/subtract")
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(asJsonString(request)))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.numerator").value(0))
+				.andExpect(jsonPath("$.denominator").value(1));
+	}
+
+	@Test
+	public void testSubtractFractionsComUm() throws Exception {
+		FractionRequest request = new FractionRequest(1, 3, 1, 4);
+
+		mockMvc.perform(post("/fractions/subtract")
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(asJsonString(request)))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.numerator").value(1))
+				.andExpect(jsonPath("$.denominator").value(12));
+	}
+
+	@Test
+	public void testSubtractFractionsInteiros() throws Exception {
+		FractionRequest request = new FractionRequest(3, 1, 1, 4);
+
+		mockMvc.perform(post("/fractions/subtract")
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(asJsonString(request)))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.numerator").value(11))
+				.andExpect(jsonPath("$.denominator").value(4));
+	}
+
+	@Test
+	public void testSubtractFractionsMesmoDenominadores() throws Exception {
+		FractionRequest request = new FractionRequest(3, 5, 1, 5);
+
+		mockMvc.perform(post("/fractions/subtract")
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(asJsonString(request)))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.numerator").value(2))
+				.andExpect(jsonPath("$.denominator").value(5));
+	}
+
+	@Test
+	public void testSubtractFractionsDenominadoresDiferentes() throws Exception {
+		FractionRequest request = new FractionRequest(3, 6, 1, 5);
+
+		mockMvc.perform(post("/fractions/subtract")
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(asJsonString(request)))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.numerator").value(3))
+				.andExpect(jsonPath("$.denominator").value(10));
+	}
+
+	@Test
+	public void testSubtractFractionsFracoesNegativas() throws Exception {
+		FractionRequest request = new FractionRequest(-3, 6, 2, 5);
+
+		mockMvc.perform(post("/fractions/subtract")
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(asJsonString(request)))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.numerator").value(-9))
+				.andExpect(jsonPath("$.denominator").value(10));
+	}
+
+//	@Test
+//	public void testSubtractFractionsFracoesNegativasZero() throws Exception {
+//		FractionRequest request = new FractionRequest(3, 0, 2, 0);
+//
+//		mockMvc.perform(post("/fractions/subtract")
+//						.contentType(MediaType.APPLICATION_JSON)
+//						.content(asJsonString(request)))
+//				.andExpect(status().isOk())
+//				.andExpect(jsonPath("$.numerator").value(0))
+//				.andExpect(jsonPath("$.denominator").value(0));
+//	}
+
+//	@Test
+//	public void testSubtractFractionsFracoesSimplificadas() throws Exception {
+//		FractionRequest request = new FractionRequest(10, 2, 15, 30);
+//
+//		mockMvc.perform(post("/fractions/subtract")
+//						.contentType(MediaType.APPLICATION_JSON)
+//						.content(asJsonString(request)))
+//				.andExpect(status().isOk())
+//				.andExpect(jsonPath("$.numerator").value(1))
+//				.andExpect(jsonPath("$.denominator").value(5));
+//	}
 
 	@Test
 	public void testMultiplyFractions() throws Exception {
