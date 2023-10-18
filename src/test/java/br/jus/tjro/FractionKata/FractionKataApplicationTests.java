@@ -33,6 +33,18 @@ class FractionKataApplicationTests {
 	}
 
 	@Test
+	public void testAddFractions2() throws Exception {
+		FractionRequest request = new FractionRequest(2, 7, 3, 7);
+
+		mockMvc.perform(post("/fractions/add")
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(asJsonString(request)))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.numerator").value(5))
+				.andExpect(jsonPath("$.denominator").value(7));
+	}
+
+	@Test
 	public void testSubtractFractions() throws Exception {
 		FractionRequest request = new FractionRequest(3, 4, 1, 4);
 
@@ -52,8 +64,8 @@ class FractionKataApplicationTests {
 						.contentType(MediaType.APPLICATION_JSON)
 						.content(asJsonString(request)))
 				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.numerator").value(2))
-				.andExpect(jsonPath("$.denominator").value(12));
+				.andExpect(jsonPath("$.numerator").value(1))
+				.andExpect(jsonPath("$.denominator").value(6));
 	}
 
 	@Test

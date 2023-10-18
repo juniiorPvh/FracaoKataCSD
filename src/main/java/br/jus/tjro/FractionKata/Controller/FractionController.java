@@ -10,34 +10,45 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/fractions")
 public class FractionController {
-    @PostMapping("/add")
+    @PostMapping(value = "/add")
     public Fraction addFractions(@RequestBody FractionRequest request) {
-        Fraction result = new Fraction(request.getNumerator1() * request.getDenominator2() + request.getNumerator2() * request.getDenominator1(),
-                request.getDenominator1() * request.getDenominator2());
+        Fraction result = Fraction.builder()
+                .numerator(request.getNumerator1() * request.getDenominator2() + request.getNumerator2() * request.getDenominator1())
+                .denominator(request.getDenominator1() * request.getDenominator2())
+                .build();
+
         result.simplify();
         return result;
     }
 
     @PostMapping("/subtract")
     public Fraction subtractFractions(@RequestBody FractionRequest request) {
-        Fraction result = new Fraction(request.getNumerator1() * request.getDenominator2() - request.getNumerator2() * request.getDenominator1(),
-                request.getDenominator1() * request.getDenominator2());
+        Fraction result = Fraction.builder()
+                .numerator(request.getNumerator1() * request.getDenominator2() - request.getNumerator2() * request.getDenominator1())
+                .denominator(request.getDenominator1() * request.getDenominator2())
+                .build();
+
         result.simplify();
         return result;
     }
 
     @PostMapping("/multiply")
     public Fraction multiplyFractions(@RequestBody FractionRequest request) {
-        Fraction result = new Fraction(request.getNumerator1() * request.getNumerator2(),
-                request.getDenominator1() * request.getDenominator2());
+        Fraction result = Fraction.builder()
+                .numerator(request.getNumerator1() * request.getNumerator2())
+                .denominator(request.getDenominator1() * request.getDenominator2())
+                .build();
+
         result.simplify();
         return result;
     }
 
     @PostMapping("/divide")
     public Fraction divideFractions(@RequestBody FractionRequest request) {
-        Fraction result = new Fraction(request.getNumerator1() * request.getDenominator2(),
-                request.getNumerator2() * request.getDenominator1());
+        Fraction result = Fraction.builder()
+                .numerator(request.getNumerator1() * request.getDenominator2())
+                .denominator(request.getNumerator2() * request.getDenominator1()).build();
+
         result.simplify();
         return result;
     }
