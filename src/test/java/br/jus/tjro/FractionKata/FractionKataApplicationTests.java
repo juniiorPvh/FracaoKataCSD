@@ -33,6 +33,17 @@ class FractionKataApplicationTests {
 	}
 
 	@Test
+	public void testAddFractionsOneDenominatorIsZero() throws Exception {
+		FractionRequest request = new FractionRequest(1, 0, 1, 3);
+
+		mockMvc.perform(post("/fractions/add")
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(asJsonString(request)))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.error").value("No possible"));
+	}
+
+	@Test
 	public void testAddFractions2() throws Exception {
 		FractionRequest request = new FractionRequest(2, 7, 3, 7);
 
