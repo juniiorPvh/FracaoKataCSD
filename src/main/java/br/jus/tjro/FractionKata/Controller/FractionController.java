@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class FractionController {
     @PostMapping(value = "/add")
     public Fraction addFractions(@RequestBody FractionRequest request) {
+        if (request.oneDenominatorsIsZero())
+            return Fraction.builder().error("No possible").build();
+
         Fraction result = Fraction.builder()
                 .numerator(request.getNumerator1() * request.getDenominator2() + request.getNumerator2() * request.getDenominator1())
                 .denominator(request.getDenominator1() * request.getDenominator2())
@@ -20,6 +23,8 @@ public class FractionController {
         result.simplify();
         return result;
     }
+
+
 
     @PostMapping("/subtract")
     public Fraction subtractFractions(@RequestBody FractionRequest request) {
