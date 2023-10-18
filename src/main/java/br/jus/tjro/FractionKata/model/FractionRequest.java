@@ -47,4 +47,8 @@ public class FractionRequest {
     public void setDenominator2(int denominator2) {
         this.denominator2 = denominator2;
     }
+
+    public Boolean oneDenominatorsIsZero() {
+        return this.getDenominator1() == 0 || this.getDenominator2() == 0;
+    }
 }

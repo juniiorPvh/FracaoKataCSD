@@ -8,6 +8,7 @@ import lombok.*;
 public class Fraction {
     private Integer numerator;
     private Integer denominator;
+    private String error;
 
     // Método para simplificar a fração
     public void simplify() {
